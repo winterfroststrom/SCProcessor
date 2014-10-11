@@ -85,12 +85,11 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     assign isBranch = op1[2] & ~op1[0];
     wire isJAL;
     assign isJAL = op1[1] & op1[0];
-    wire pcMux;
-    assign pcMux = isBranch | isJAL;
     wire[DBITS - 1:0] pcIn;
     assign pcIn = isJAL ? outAlu : imm32;
-    wire outCond;
-    InstrFetch pc (clk, reset, pcIn, pcMux, outCond, pcOut);
+    wire useImm;
+    assign useImm = (isBranch & outCond) | isJAL;
+    InstrFetch pc (clk, reset, pcIn, useImm, pcOut);
   
     // Instruction Memory
     wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
@@ -107,28 +106,35 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     );
   
     // Register File and Sign Extension
-    wire[31:0] outReg1, outReg2, imm32;
+    wire[31:0] outRegd, outReg1, outReg2, imm32;
     wire wrtEn;
-    assign wrtEn = ~(op1 == OP1_SW | op1 == OP1_BCOND);
+    assign wrtEn = ~(op1 == OP1_SW | op1 == OP1_BCOND) & lock;
     wire[31:0] wrtData;
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
-        clk, reset, wrtEn, rd, rs1, rs2, wrtData, imm16, outReg1, outReg2, imm32
+        clk, wrtEn, rd, rs1, rs2, wrtData, imm16,
+        outRegd, outReg1, outReg2, imm32
     );
 
     // ALU and conditional
     wire[31:0] outAlu;
+    wire outCond;
     wire[OP_BIT_WIDTH-1:0] opAlu;
     assign opAlu = op2;
-    wire[1:0] aluMux;
-    assign aluMux = {isBranch & op2[2], op1[3]};
+    wire isMvhi;
+    assign isMvhi = op1[3] & ~op1[1] & op2[0] & op2[1];
+    wire useZero;
+    assign useZero = (isBranch & op2[2]) | isMvhi;
+    wire useImm;
+    assign useImm = op1[3];
     Execute #(OP_BIT_WIDTH, DBITS) execute (
-        outReg1, outReg2, imm32, aluMux, opAlu, outAlu, outCond
+        outRegd, outReg1, outReg2, imm32, imm16, useZero, useImm, isMvhi, opAlu,
+        outAlu, outCond
     );
 
     // Put the code for data memory and I/O here
     // KEYS, SWITCHES, HEXS, and LEDS are memory mapped IO
     wire wrMEM;
-    assign wrMEM = op1[0] & op1[2]; // SW
+    assign wrMEM = op1[0] & op1[2] & lock; // SW
     wire[31:0] outMem;
     DataMemory dataMemory(
         clk, reset, wrMEM, outAlu, outReg2, SW, KEY,

@@ -26,6 +26,6 @@ module ALU(aluOp, inA, inB, outAlu);
             (aluOp[2]) ? 
                 ((aluOp[3]) ? ~bitResult  :     // nand, nor, nxor
                                bitResult) :     // and, or, xor
-                arithResult;                    // add, sub
+                arithResult;                    // add, sub, mvhi
 
 endmodule
