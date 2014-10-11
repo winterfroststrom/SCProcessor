@@ -18,9 +18,9 @@ module ALU(aluOp, inA, inB, outAlu);
 
     assign arithResult = inA + ((aluOp[0]) ? inB : (~inB + 1)); // add 4'bxxx0 or sub 4'bxxx1
     assign bitResult = 
-            (aluOp[1:0] == 2'b00) ? inA & inB : // and 4'bxx00
-            (aluOp[1:0] == 2'b01) ? inA | inB : // or  4'bxx01
-           /*aluOp[1:0] == 2'b10*/  inA ^ inB;  // xor 4'bxx10
+            aluOp[0] ? inA | inB : // or  4'bxxx1
+            aluOp[1] ? inA ^ inB : // xor 4'bxx1x
+                       inA & inB;  // and 4'bxx00
 
     assign outAlu = 
             (aluOp[2]) ? 
