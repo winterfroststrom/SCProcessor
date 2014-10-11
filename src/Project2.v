@@ -87,9 +87,9 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     assign isJAL = op1[1] & op1[0];
     wire[DBITS - 1:0] pcIn;
     assign pcIn = isJAL ? outAlu : imm32;
-    wire useImm;
-    assign useImm = (isBranch & outCond) | isJAL;
-    InstrFetch pc (clk, reset, pcIn, useImm, pcOut);
+    wire useImmPc;
+    assign useImmPc = (isBranch & outCond) | isJAL;
+    InstrFetch pc (clk, reset, pcIn, useImmPc, pcOut);
   
     // Instruction Memory
     wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
@@ -124,10 +124,10 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     assign isMvhi = op1[3] & ~op1[1] & op2[0] & op2[1];
     wire useZero;
     assign useZero = (isBranch & op2[2]) | isMvhi;
-    wire useImm;
-    assign useImm = op1[3];
+    wire useImmExe;
+    assign useImmExe = op1[3];
     Execute #(OP_BIT_WIDTH, DBITS) execute (
-        outRegd, outReg1, outReg2, imm32, imm16, useZero, useImm, isMvhi, opAlu,
+        outRegd, outReg1, outReg2, imm32, imm16, useZero, useImmExe, isMvhi, opAlu,
         outAlu, outCond
     );
 
