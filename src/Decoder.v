@@ -1,8 +1,8 @@
-module Decoder(instr, op1, op2, rd, rs1, rs2, imm16);
-    parameter INSTR_WIDTH = 32;
-    parameter REG_WIDTH = 4;
+module Decoder(inst, op1, op2, rd, rs1, rs2, imm16);
+    parameter INST_WIDTH;
+    parameter REG_WIDTH;
 
-    input[INSTR_WIDTH - 1: 0]   instr;
+    input[INST_WIDTH - 1: 0]    inst;
     output[3: 0]                op1;
     output[3: 0]                op2;
     output[REG_WIDTH - 1: 0]    rd;
@@ -10,11 +10,11 @@ module Decoder(instr, op1, op2, rd, rs1, rs2, imm16);
     output[REG_WIDTH - 1: 0]    rs2;
     output[15: 0]               imm16;
 
-    assign op1 = instr[31: 28];
-    assign op2 = instr[27: 24];
-    assign rd  = instr[23: 20];
-    assign rs1 = (instr[30]) ? instr[23: 20] : instr[19: 16];  // checks if op1 is 01xx for Branch or
-    assign rs2 = (instr[30]) ? instr[19: 16] : instr[15: 12];
-    assign imm16 = instr[15: 0];
+    assign op1 = inst[31: 28];
+    assign op2 = inst[27: 24];
+    assign rd  = inst[23: 20];
+    assign rs1 = (inst[30]) ? inst[23: 20] : inst[19: 16];  // checks if op1 is 01xx for Branch or
+    assign rs2 = (inst[30]) ? inst[19: 16] : inst[15: 12];
+    assign imm16 = inst[15: 0];
 
 endmodule
