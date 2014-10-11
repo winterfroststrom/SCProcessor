@@ -103,6 +103,12 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
 
     // Put the code for data memory and I/O here
 
+    wire wrMEM;
+    assign wrMEM = op1 == OP1_SW;
+    wire[31:0] outMem;
+    DataMemory dataMemory(
+        clk, reset, wrMEM, outAlu, outReg2, SW, KEY, LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
+    );
     // KEYS, SWITCHES, HEXS, and LEDS are memeory mapped IO
 
 endmodule
