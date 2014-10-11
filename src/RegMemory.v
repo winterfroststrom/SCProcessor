@@ -11,8 +11,6 @@ module RegMemory(clk, isWrRegMem, addr, dataIn, regOut);
     input[DATA_BIT_WIDTH - 1:0] dataIn;
     output[DATA_BIT_WIDTH - 1:0] regOut;
     
-    reg[DATA_BIT_WIDTH - 1:0] data[0: DMEMWORDS - 1];
-
     wire[DMEMADDRBITS - DMEMWORDBITS - 1:0] address;
     RegisterWriteAlways #(DMEMADDRBITS - DMEMWORDBITS)
     regAddr(
@@ -22,7 +20,9 @@ module RegMemory(clk, isWrRegMem, addr, dataIn, regOut);
     RegisterWriteAlways #(DATA_BIT_WIDTH) regData(
         clk, dataIn, dataInput
     );
-        
+
+    reg[DATA_BIT_WIDTH - 1:0] data[0: DMEMWORDS - 1];
+
 	always @ (negedge clk) begin
         if (isWrRegMem) begin
             data[address] <= dataInput;
