@@ -99,7 +99,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
 
     // ALU and conditional
     wire[31:0] outAlu;
-    Execute #(OP_BIT_WIDTH, DBITS) execute (outReg1, outReg2, imm32, aluMux, op2, outAlu);
+    Execute #(OP_BIT_WIDTH, DBITS) execute (outReg1, outReg2, imm32, aluMux, opAlu, opCond, outAlu);
 
     // Put the code for data memory and I/O here
 
