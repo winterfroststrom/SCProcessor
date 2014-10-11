@@ -4,6 +4,7 @@
 *.rpt
 *.summary
 *.done
+*.qws
 
 db/
 incremental_db/
