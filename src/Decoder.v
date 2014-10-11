@@ -8,7 +8,7 @@ module Decoder(instr, op1, op2, rd, rs1, rs2, imm16);
     output[REG_WIDTH - 1: 0]    rd;
     output[REG_WIDTH - 1: 0]    rs1;
     output[REG_WIDTH - 1: 0]    rs2;
-    output[15: 0]               imm;
+    output[15: 0]               imm16;
 
     assign op1 = instr[31: 28];
     assign op2 = instr[27: 24];

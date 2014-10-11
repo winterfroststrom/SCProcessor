@@ -97,7 +97,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
   RegisterFile registerFile (clk, reset, wrtEn, rd, rs1, rs2, wrtData, outReg1, outReg2);
 
   wire[31:0] imm32;
-  SignExtension signExtender (imm16, imm32);
+  SignExtension #(16, 32) signExtender (imm16, imm32);
   
   // Create ALU unit
   

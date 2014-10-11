@@ -1,2 +1,9 @@
 *~
 *.swp
+*.bak
+*.rpt
+*.summary
+*.done
+
+db/
+incremental_db/
