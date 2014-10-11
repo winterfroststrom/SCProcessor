@@ -1,12 +1,11 @@
 module IOMemory(
-    clk, reset, isHex, isLedr, isLedg, isSwitches, switches, keys, dataIn,
+    clk, isHex, isLedr, isLedg, isSwitches, switches, keys, dataIn,
     ledr, ledg, hex0, hex1, hex2, hex3, ioOut
 );
 
     parameter DATA_BIT_WIDTH;
 
     input clk;
-    input reset;
     input isHex;
     input isLedr;
     input isLedg;
@@ -23,17 +22,17 @@ module IOMemory(
     output[9:0] ledr;
     output[7:0] ledg;
 
-    Register #(7, 7'b0) regHex0(clk, reset, isHex, dataIn[6:0], hex0);
-    Register #(7, 7'b0) regHex1(clk, reset, isHex, dataIn[14:8], hex1);
-    Register #(7, 7'b0) regHex2(clk, reset, isHex, dataIn[22:16], hex2);
-    Register #(7, 7'b0) regHex3(clk, reset, isHex, dataIn[30:24], hex3);
-    Register #(10, 10'b0) regLEDR(clk, reset, isLedr, dataIn[9:0], ledr);
-    Register #(8, 8'b0) regLEDG(clk, reset, isLedg, dataIn[7:0], ledg);
+    RegisterResetless #(7) regHex0(clk, isHex, dataIn[6:0], hex0);
+    RegisterResetless #(7) regHex1(clk, isHex, dataIn[14:8], hex1);
+    RegisterResetless #(7) regHex2(clk, isHex, dataIn[22:16], hex2);
+    RegisterResetless #(7) regHex3(clk, isHex, dataIn[30:24], hex3);
+    RegisterResetless #(10) regLEDR(clk, isLedr, dataIn[9:0], ledr);
+    RegisterResetless #(8) regLEDG(clk, isLedg, dataIn[7:0], ledg);
     
     wire[9:0] switchesOut;
-    Register #(10, 10'b0) regSwitches(clk, reset, 1'b1, switches, switchesOut);
+    RegisterWriteAlways #(10) regSwitches(clk, switches, switchesOut);
     wire[3:0] keysOut;
-    Register #(4, 4'b0) regKeys(clk, reset, 1'b1, keys, keysOut);
+    RegisterWriteAlways #(4) regKeys(clk, keys, keysOut);
 
     assign ioOut = isSwitches ? {22'b0, switchesOut} : {28'b0, keysOut};
 

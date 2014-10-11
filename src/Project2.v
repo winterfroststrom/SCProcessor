@@ -137,7 +137,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     assign wrMEM = op1[0] & op1[2] & lock; // SW
     wire[31:0] outMem;
     DataMemory dataMemory(
-        clk, reset, wrMEM, outAlu, outReg2, SW, KEY,
+        clk, wrMEM, outAlu, outReg2, SW, KEY,
         LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
     );
 
