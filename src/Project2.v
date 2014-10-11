@@ -108,7 +108,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     // Register File and Sign Extension
     wire[31:0] outRegd, outReg1, outReg2, imm32;
     wire wrtEn;
-    assign wrtEn = ~(op1 == OP1_SW | op1 == OP1_BCOND) & lock;
+    assign wrtEn = ~op1[2] & lock;
     wire[31:0] wrtData;
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
         clk, wrtEn, rd, rs1, rs2, wrtData, imm16,
