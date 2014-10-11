@@ -1,14 +1,14 @@
-module Execute(inReg1, inReg2, imm32, aluMux, opAlu, opCond, outAlu);
+module Execute(inReg1, inReg2, imm32, aluMux, opAlu, outAlu, outCond);
     parameter OPCODE_BIT_WIDTH;
     parameter DBITS;
 
     input[DBITS - 1: 0] inReg1, inReg2, imm32;
-    input aluMux[1:0];
-    input[OPCODE_BIT_WIDTH - 1: 0] op2;
+    input[1:0] aluMux;
+    input[OPCODE_BIT_WIDTH - 1: 0] opAlu;
 
     output[DBITS - 1: 0] outAlu;
-    wire[DBITS - 1: 0] outAlu;
-
+    output outCond;
+    
     wire[DBITS - 1: 0] inA, inB;
 
     assign inA = inReg1;
@@ -17,7 +17,7 @@ module Execute(inReg1, inReg2, imm32, aluMux, opAlu, opCond, outAlu);
                                 inReg2;     // register
 
     ALU #(OPCODE_BIT_WIDTH, DBITS) alu (opAlu, inA, inB, outAlu);
-
+    ConditionalCheck #(DBITS) cond (opAlu, outAlu, outCond);
 endmodule
 
 
@@ -30,6 +30,6 @@ module ConditionalCheck(opCond, in0, outCond);
 
     output outCond;
 
-
+    assign outCond = 1'b0;
 
 endmodule

@@ -5,6 +5,8 @@
 *.summary
 *.done
 *.qws
+*.sof
+*.pof
 
 db/
 incremental_db/

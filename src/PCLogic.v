@@ -5,7 +5,7 @@ module PCLogic(pcOld, imm, isBranch, condVal, pcNew);
     input[(BIT_WIDTH - 1): 0] imm;
     input condVal, isBranch;
 
-    output pcNew;
+    output[BIT_WIDTH - 1:0] pcNew;
 
     assign pcNew = pcOld + ((isBranch & condVal) ? imm << 2 : 4);
 endmodule

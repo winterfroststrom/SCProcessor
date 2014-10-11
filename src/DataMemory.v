@@ -1,4 +1,7 @@
-module DataMemory(clk, reset, wrMEM, addr, dataIn, switches, keys, ledr, ledg, hex0, hex1, hex2, hex3, dataOut);
+module DataMemory(
+    clk, reset, wrMEM, addr, dataIn, switches, keys,
+    ledr, ledg, hex0, hex1, hex2, hex3, dataOut
+);
     parameter DATA_BIT_WIDTH                = 32;    
     parameter DMEMADDRBITS                  = 13;
     parameter DMEMWORDBITS                  = 2;
@@ -7,7 +10,7 @@ module DataMemory(clk, reset, wrMEM, addr, dataIn, switches, keys, ledr, ledg, h
     input clk;
     input reset;
     input wrMEM;
-    input[DMEMADDRBITS - 1: 0] addr;
+    input[DATA_BIT_WIDTH - 1: 0] addr;
     input[DATA_BIT_WIDTH - 1:0] dataIn;
     input[9:0] switches;
     input[3:0] keys;
@@ -29,12 +32,11 @@ module DataMemory(clk, reset, wrMEM, addr, dataIn, switches, keys, ledr, ledg, h
         wrMEM, addr,
         isHex, isLedr, isLedg, isSwitches, isWrRegMem, isIoOut
     );
-    
+
     wire[DATA_BIT_WIDTH - 1:0] ioOut;
     IOMemory #(DATA_BIT_WIDTH) ioMem(
-        clk, reset, isHex, isLedr, isLedg, isSwitches,
-        hex0, hex1, hex2, hex3, ledr, ledg, switches, keys, dataIn,
-        ioOut
+        clk, reset, isHex, isLedr, isLedg, isSwitches, switches, keys, dataIn,
+        ledr, ledg, hex0, hex1, hex2, hex3, ioOut
     );
 
     wire[DATA_BIT_WIDTH - 1:0] regOut;

@@ -18,7 +18,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     parameter ADDR_LEDR                    = 32'hF0000004;
     parameter ADDR_LEDG                    = 32'hF0000008;
 
-    parameter IMEM_INIT_FILE               = "Sorter2.mif";
+    parameter IMEM_INIT_FILE               = "src/asm/Sorter2.mif";
     parameter IMEM_ADDR_BIT_WIDTH          = 11;
     parameter IMEM_DATA_BIT_WIDTH          = INST_BIT_WIDTH;
     parameter IMEM_PC_BITS_HI              = IMEM_ADDR_BIT_WIDTH + 2;
@@ -72,7 +72,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     parameter OP2_GTZ                      = 4'b1111;
   
   
-    //PLL, clock genration, and reset generation
+    //PLL, clock generation, and reset generation
     wire clk, lock;
     //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
     PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
@@ -81,35 +81,62 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
   
     // PC module
     wire[DBITS - 1: 0] pcOut;
-    InstrFetch pc (clk, reset, imm32, pcMux, pcOut);
+    wire isBranch;
+    assign isBranch = op1[2] & ~op1[0];
+    wire isJAL;
+    assign isJAL = op1[1] & op1[0];
+    wire pcMux;
+    assign pcMux = isBranch | isJAL;
+    wire[DBITS - 1:0] pcIn;
+    assign pcIn = isJAL ? outAlu : imm32;
+    wire outCond;
+    InstrFetch pc (clk, reset, pcIn, pcMux, outCond, pcOut);
   
-    // Instruction Memoryy
+    // Instruction Memory
     wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
-    InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (pcOut[IMEM_PC_BITS_HI - 1: IMEM_PC_BITS_LO], instWord);
+    InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (
+        pcOut[IMEM_PC_BITS_HI - 1: IMEM_PC_BITS_LO], instWord
+    );
 
-    // Instruction Decorder
+    // Instruction Decoder
     wire[OP_BIT_WIDTH - 1: 0] op1, op2;
     wire[REG_INDEX_BIT_WIDTH - 1: 0] rd, rs1, rs2;
-    wire[INST_BIT_WIDTH / 2: 0] imm16;
-    Decoder #(INST_BIT_WIDTH, REG_INDEX_BIT_WIDTH) instrDecoder (instWord, op1, op2, rd, rs1, rs2, imm16);
+    wire[INST_BIT_WIDTH - OP_BIT_WIDTH * 2 - REG_INDEX_BIT_WIDTH * 2 - 1: 0] imm16;
+    Decoder #(INST_BIT_WIDTH, REG_INDEX_BIT_WIDTH) instrDecoder (
+        instWord, op1, op2, rd, rs1, rs2, imm16
+    );
   
     // Register File and Sign Extension
     wire[31:0] outReg1, outReg2, imm32;
-    RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (clk, reset, wrtEn, rd, rs1, rs2, wrtData, imm16, outReg1, outReg2, imm32);
+    wire wrtEn;
+    assign wrtEn = ~(op1 == OP1_SW | op1 == OP1_BCOND);
+    wire[31:0] wrtData;
+    RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
+        clk, reset, wrtEn, rd, rs1, rs2, wrtData, imm16, outReg1, outReg2, imm32
+    );
 
     // ALU and conditional
     wire[31:0] outAlu;
-    Execute #(OP_BIT_WIDTH, DBITS) execute (outReg1, outReg2, imm32, aluMux, opAlu, opCond, outAlu);
+    wire[OP_BIT_WIDTH-1:0] opAlu;
+    assign opAlu = op2;
+    wire[1:0] aluMux;
+    assign aluMux = {isBranch & op2[2], op1[3]};
+    Execute #(OP_BIT_WIDTH, DBITS) execute (
+        outReg1, outReg2, imm32, aluMux, opAlu, outAlu, outCond
+    );
 
     // Put the code for data memory and I/O here
-
+    // KEYS, SWITCHES, HEXS, and LEDS are memory mapped IO
     wire wrMEM;
-    assign wrMEM = op1 == OP1_SW;
+    assign wrMEM = op1[0] & op1[2]; // SW
     wire[31:0] outMem;
     DataMemory dataMemory(
-        clk, reset, wrMEM, outAlu, outReg2, SW, KEY, LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
+        clk, reset, wrMEM, outAlu, outReg2, SW, KEY,
+        LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
     );
-    // KEYS, SWITCHES, HEXS, and LEDS are memeory mapped IO
+
+    assign wrtData =
+        op1[0] ? (op1[1] ? pcOut : outMem) : // JAL, LW
+        outAlu;
 
 endmodule
-
