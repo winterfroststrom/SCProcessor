@@ -81,7 +81,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
   
     // PC module
     wire[DBITS - 1: 0] pcOut;
-    InstrFetch pc(clk, reset, imm32, pcMux, pcOut);
+    InstrFetch pc (clk, reset, imm32, pcMux, pcOut);
   
     // Instruction Memoryy
     wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
@@ -97,8 +97,9 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     wire[31:0] outReg1, outReg2, imm32;
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (clk, reset, wrtEn, rd, rs1, rs2, wrtData, imm16, outReg1, outReg2, imm32);
 
-
-    // Create ALU unit
+    // ALU and conditional
+    wire[31:0] outAlu;
+    Execute #(OP_BIT_WIDTH, DBITS) execute (outReg1, outReg2, imm32, aluMux, op2, outAlu);
 
     // Put the code for data memory and I/O here
 

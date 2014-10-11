@@ -525,6 +525,8 @@ set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_RO
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name ALLOW_POWER_UP_DONT_CARE OFF
 set_global_assignment -name MISC_FILE Lectures.dpf
+set_global_assignment -name VERILOG_FILE src/ALU.v
+set_global_assignment -name VERILOG_FILE src/Execute.v
 set_global_assignment -name VERILOG_FILE src/RegFetch.v
 set_global_assignment -name VERILOG_FILE src/RegisterFile.v
 set_global_assignment -name VERILOG_FILE src/PCLogic.v
