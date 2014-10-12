@@ -127,7 +127,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     wire useImmExe;
     assign useImmExe = op1[3];
     Execute #(OP_BIT_WIDTH, DBITS) execute (
-        outRegd, outReg1, outReg2, imm32, imm16, useZero, useImmExe, isMvhi, opAlu,
+        outRegd, outReg1, outReg2, imm32, imm16, useZero, useImmExe, isMvhi, opAlu, opCond,
         outAlu, outCond
     );
 

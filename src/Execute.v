@@ -1,5 +1,5 @@
 module Execute(
-    inRegd, inReg1, inReg2, imm32, immHi, useZero, useImm, isMvhi, opAlu,
+    inRegd, inReg1, inReg2, imm32, immHi, useZero, useImm, isMvhi, opAlu, opCond,
     outAlu, outCond
 );
     parameter OPCODE_BIT_WIDTH;
@@ -8,10 +8,10 @@ module Execute(
     input[DBITS - 1: 0] inRegd, inReg1, inReg2, imm32;
     input[15:0] immHi;
     input useZero, useImm, isMvhi;
-    input[OPCODE_BIT_WIDTH - 1: 0] opAlu;
+    input[OPCODE_BIT_WIDTH - 1: 0] opAlu, opCond;
 
     output[DBITS - 1: 0] outAlu;
-    output outCond;
+    output[0:0] outCond;
     
     wire[DBITS - 1: 0] inA, inB;
 
@@ -21,19 +21,5 @@ module Execute(
                     inReg2;                 // register
 
     ALU #(OPCODE_BIT_WIDTH, DBITS) alu (opAlu, inA, inB, outAlu);
-    ConditionalCheck #(DBITS) cond (opAlu, outAlu, outCond);
-endmodule
-
-
-
-module ConditionalCheck(opCond, in0, outCond);
-    parameter DBITS;
-
-    input[3:0] opCond;
-    input[DBITS - 1: 0] in0;  // in0 = inA - inB in ALU
-
-    output outCond;
-
-    assign outCond = 1'b0;
-
+    ConditionalCheck #(DBITS) cond (opCond, outAlu, outCond);   // There should be opCond because comp/branch will always have opAlu as sub.
 endmodule
