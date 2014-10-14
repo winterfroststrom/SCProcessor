@@ -13,7 +13,8 @@ module Decoder(inst, op1, op2, rd, rs1, rs2, imm16);
     assign op1 = inst[31: 28];
     assign op2 = inst[27: 24];
     assign rd  = inst[23: 20];
-    assign rs1 = (inst[30]) ? inst[23: 20] : inst[19: 16];  // checks if op1 is x1xx for Branch or
+    // checks if op1 is x1xx for Branch or
+    assign rs1 = (inst[30]) ? inst[23: 20] : inst[19: 16];
     assign rs2 = (inst[30]) ? inst[19: 16] : inst[15: 12];
     assign imm16 = inst[15: 0];
 

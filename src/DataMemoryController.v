@@ -15,7 +15,7 @@ module DataMemoryController(wrMEM, addr, isHex, isLedr, isLedg, isSwitches, isWr
     assign isIo = &{addr[31:28]};
 
     wire isIoIn;
-    assign isIoIn = wrMEM & isIo & addr[4];
+    assign isIoIn = wrMEM & isIo & ~addr[4];
     wire isHex;
     assign isHex = isIoIn & ~addr[2] & ~addr[3];
     wire isLedr;

@@ -1,6 +1,6 @@
 module SCProcController(
     lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-    useImmPc, pcIn,
+    useImmPc, pcIn, pcOld,
     wrtEnReg, wrtReg,
     useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond,
     wrtEnMem
@@ -21,11 +21,13 @@ module SCProcController(
     wire isJAL = op1[1] & op1[0];
 	wire isSW = op1[0] & op1[2];
     
+    
     // InstrFetch
     output useImmPc;
     assign useImmPc = (isBranch & outCond) | isJAL;
-    output[DBITS - 1:0] pcIn;
+    output[DBITS - 1:0] pcIn, pcOld;
     assign pcIn = isJAL ? outAlu : imm32;
+    assign pcOld = isJAL ? {(DBITS){1'b0}} : pcOut;
 
     // RegFetch
     output wrtEnReg;

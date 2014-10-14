@@ -1,11 +1,4 @@
-module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
-    input  [9:0] SW;
-    input  [3:0] KEY;
-    input  CLOCK_50;
-    output [9:0] LEDR;
-    output [7:0] LEDG;
-    output [6:0] HEX0,HEX1,HEX2,HEX3;
-   
+module TestRegFetch();
     parameter DBITS                        = 32;
     parameter INST_SIZE                    = 32'd4;
     parameter INST_BIT_WIDTH               = 32;
@@ -71,85 +64,95 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     parameter OP2_GTEZ                     = 4'b1110;
     parameter OP2_GTZ                      = 4'b1111;
 
-
-    //PLL, clock generation, and reset generation
-    //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
-    wire clk, lock;
-    assign clk = ~KEY[0];
-    assign lock = 1'b1;
-//    PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
-    wire reset = ~lock;
-
-    // Controller Output
-    wire useImmPc;
-    wire[DBITS - 1:0] pcIn, pcOld;
-    wire wrtEnReg;
-    wire[31:0] wrtReg;
-    wire useZeroExe, useImmExe, isMvhi, isBranchOrCond;
-    wire[OP_BIT_WIDTH-1:0] opAlu, opCond;    
-    wire wrEnMem;
-
-    // InstrFetch output
-    wire[DBITS - 1: 0] pcOut;
-
-    // InstMemory output
-    wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
-
-    // Decoder Output
-    wire[OP_BIT_WIDTH - 1: 0] op1, op2;
-    wire[REG_INDEX_BIT_WIDTH - 1: 0] rd, rs1, rs2;
-    wire[INST_BIT_WIDTH - OP_BIT_WIDTH * 2 - REG_INDEX_BIT_WIDTH * 2 - 1: 0] imm16;
-
-    // RegFetch Output
-    wire[31:0] outRegd, outReg1, outReg2, imm32;
-
-    // Execute Output
-    wire[31:0] outAlu;
-    wire outCond;
-
-    // DataMemory Output
-    wire[31:0] outMem;
     
-    // Controller
-    SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
-        lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-        useImmPc, pcIn, pcOld, // PC
-        wrtEnReg, wrtReg, // RegFetch
-        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
-        wrEnMem // Memory
-    );
-  
-    // PC module
-    InstrFetch pc (clk, reset, useImmPc, pcIn, pcOld, pcOut);
-  
-    // Instruction Memory
-    InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (
-        pcOut[IMEM_PC_BITS_HI - 1: IMEM_PC_BITS_LO], instWord
-    );
-
-    // Instruction Decoder
-    Decoder #(INST_BIT_WIDTH, REG_INDEX_BIT_WIDTH) instrDecoder (
-        instWord, op1, op2, rd, rs1, rs2, imm16
-    );
-  
+    reg clk;
+    reg wrtEnReg;
+    reg[OP_BIT_WIDTH - 1:0] rd, rs1, rs2;
+    reg[31:0] wrtReg;
+    reg[15:0] imm16;
+    wire[31:0] outRegd, outReg1, outReg2, imm32;
+    
     // Register File and Sign Extension
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
         clk, wrtEnReg, rd, rs1, rs2, wrtReg, imm16,
         outRegd, outReg1, outReg2, imm32
     );
 
-    // ALU and conditional
-    Execute #(OP_BIT_WIDTH, DBITS) execute (
-        outRegd, outReg1, outReg2, imm32, imm16,
-        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond,
-        outAlu, outCond
-    );
+    reg[31:0] num32;
+    
+    initial begin
+        #1
+        rs1 = 4'b0001;
+        rs2 = 4'b0010;
+        imm16 = 16'hf0f0;
+        
+        clk = 1'b1;
+        wrtEnReg = 1'b1;
+        wrtReg = 5;
+        rd = 4'b0000;
+        $display("1 Wrote 5: %d", outRegd);
+        #1
+        clk = 1'b0;
+        $display("0 Wrote 5: %d", outRegd);
+        #1
+        $display("0 Wrote 5: %d", outRegd);
+        $display("Read: %d, %d, %d", outRegd, outReg1, outReg2);
+        #1
 
-    // Put the code for data memory and I/O here
-    // KEYS, SWITCHES, HEXS, and LEDS are memory mapped IO
-    DataMemory dataMemory(
-        clk, wrEnMem, outAlu, outReg2, SW, KEY,
-        LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
-    );
+        clk = 1'b1;
+        wrtEnReg = 1'b1;
+        wrtReg = 7;
+        rd = 4'b0001;
+        $display("1 Wrote 7: %d", outRegd);
+        #1
+        clk = 1'b0;
+        $display("0 Wrote 7: %d", outRegd);
+        #1
+        $display("0 Wrote 7: %d", outRegd);
+        $display("Read: %d, %d, %d", outRegd, outReg1, outReg2);
+        #1
 
+        clk = 1'b1;
+        wrtEnReg = 1'b1;
+        wrtReg = 9;
+        rd = 4'b0010;
+        $display("1 Wrote 9: %d", outRegd);
+        #1
+        clk = 1'b0;
+        $display("0 Wrote 9: %d", outRegd);
+        #1
+        $display("0 Wrote 9: %d", outRegd);
+        $display("Read: %d, %d, %d", outRegd, outReg1, outReg2);
+        #1
+        
+        clk = 1'b1;
+        wrtEnReg = 1'b1;
+        wrtReg = 2;
+        rd = 4'b0000;
+        $display("1 Wrote 2: %d", outRegd);
+        #1
+        clk = 1'b0;
+        $display("0 Wrote 2: %d", outRegd);
+        #1
+        $display("0 Wrote 2: %d", outRegd);
+        $display("Read: %d, %d, %d", outRegd, outReg1, outReg2);
+        #1
+        
+        clk = 1'b1;
+        wrtEnReg = 1'b0;
+        rd = 4'b0000;
+        rs1 = 4'b0001;
+        rs2 = 4'b0010;
+        #1
+        clk = 1'b0;
+        #1
+        $display("Read: %d, %d, %d", outRegd, outReg1, outReg2);
+        #1
+        
+        
+        num32 = imm32;
+        $display("imm %b", num32);
+        
+    end
+    
 endmodule

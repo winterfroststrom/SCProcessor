@@ -1,16 +1,16 @@
-C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module RegisterFile
-
-Top level modules:
-	RegisterFile
-
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/Register.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/Register.v
+C:/Users/Sparky/Documents/quartus/SCProcessor/src/Register.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/Register.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module Register
 
 Top level modules:
 	Register
+
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module RegisterFile
+
+Top level modules:
+	RegisterFile
 
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
@@ -40,6 +40,13 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	RegFetch
 
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestIOMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestIOMemory.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestIOMemory
+
+Top level modules:
+	TestIOMemory
+
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module RegisterWriteAlways
@@ -54,6 +61,13 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	PCLogic
 
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestInstrFetch.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestInstrFetch.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestInstrFetch
+
+Top level modules:
+	TestInstrFetch
+
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/ConditionalCheck.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/ConditionalCheck.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module ConditionalCheck
@@ -67,6 +81,13 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 
 Top level modules:
 	TestALU
+
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestTopLevel
+
+Top level modules:
+	TestTopLevel
 
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemory.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
@@ -96,13 +117,6 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	SignExtension
 
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module InstMemory
-
-Top level modules:
-	InstMemory
-
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module DataMemoryController
@@ -116,6 +130,20 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 
 Top level modules:
 	RegMemory
+
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module InstMemory
+
+Top level modules:
+	InstMemory
+
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestRegFetch.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestRegFetch.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestRegFetch
+
+Top level modules:
+	TestRegFetch
 
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
@@ -138,6 +166,13 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	InstrFetch
 
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestConditionalCheck.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestConditionalCheck.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestConditionalCheck
+
+Top level modules:
+	TestConditionalCheck
+
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/ALU.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/ALU.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module ALU
@@ -145,11 +180,18 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	ALU
 
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestConditionalCheck.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestConditionalCheck.v
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestDataMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestDataMemory.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module TestConditionalCheck
+-- Compiling module TestDataMemory
 
 Top level modules:
-	TestConditionalCheck
+	TestDataMemory
+
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestExecute.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestExecute.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestExecute
+
+Top level modules:
+	TestExecute
 
 } {} {}}

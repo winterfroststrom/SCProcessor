@@ -23,6 +23,13 @@ module RegMemory(clk, isWrRegMem, addr, dataIn, regOut);
 
     reg[DATA_BIT_WIDTH - 1:0] data[0: DMEMWORDS - 1];
 
+    integer i;
+    initial begin
+        for (i = 0; i < DMEMWORDS; i = i + 1) begin
+            data[i] = {(DATA_BIT_WIDTH){1'b0}};
+        end
+    end
+    
 	always @ (negedge clk) begin
         if (isWrRegMem) begin
             data[address] <= dataInput;

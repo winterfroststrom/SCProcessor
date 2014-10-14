@@ -1,11 +1,4 @@
-module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
-    input  [9:0] SW;
-    input  [3:0] KEY;
-    input  CLOCK_50;
-    output [9:0] LEDR;
-    output [7:0] LEDG;
-    output [6:0] HEX0,HEX1,HEX2,HEX3;
-   
+module TestInstrFetch();
     parameter DBITS                        = 32;
     parameter INST_SIZE                    = 32'd4;
     parameter INST_BIT_WIDTH               = 32;
@@ -71,85 +64,60 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     parameter OP2_GTEZ                     = 4'b1110;
     parameter OP2_GTZ                      = 4'b1111;
 
+    wire reset = 1'b0;
+    reg clk, useImm;
+    reg[DBITS - 1:0] imm;
+    reg isJAL;
 
-    //PLL, clock generation, and reset generation
-    //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
-    wire clk, lock;
-    assign clk = ~KEY[0];
-    assign lock = 1'b1;
-//    PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
-    wire reset = ~lock;
-
-    // Controller Output
-    wire useImmPc;
-    wire[DBITS - 1:0] pcIn, pcOld;
-    wire wrtEnReg;
-    wire[31:0] wrtReg;
-    wire useZeroExe, useImmExe, isMvhi, isBranchOrCond;
-    wire[OP_BIT_WIDTH-1:0] opAlu, opCond;    
-    wire wrEnMem;
-
-    // InstrFetch output
-    wire[DBITS - 1: 0] pcOut;
-
-    // InstMemory output
-    wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
-
-    // Decoder Output
-    wire[OP_BIT_WIDTH - 1: 0] op1, op2;
-    wire[REG_INDEX_BIT_WIDTH - 1: 0] rd, rs1, rs2;
-    wire[INST_BIT_WIDTH - OP_BIT_WIDTH * 2 - REG_INDEX_BIT_WIDTH * 2 - 1: 0] imm16;
-
-    // RegFetch Output
-    wire[31:0] outRegd, outReg1, outReg2, imm32;
-
-    // Execute Output
-    wire[31:0] outAlu;
-    wire outCond;
-
-    // DataMemory Output
-    wire[31:0] outMem;
+    wire[DBITS - 1:0] pcOut;
     
-    // Controller
-    SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
-        lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-        useImmPc, pcIn, pcOld, // PC
-        wrtEnReg, wrtReg, // RegFetch
-        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
-        wrEnMem // Memory
+    wire[DBITS - 1:0] pcOld;
+    assign pcOld = isJAL ? 0 : pcOut;
+    
+    reg[DBITS - 1:0] OUT;
+    
+    InstrFetch unit0(
+        clk, reset, useImm, imm, pcOld, pcOut
     );
-  
-    // PC module
-    InstrFetch pc (clk, reset, useImmPc, pcIn, pcOld, pcOut);
-  
-    // Instruction Memory
-    InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (
-        pcOut[IMEM_PC_BITS_HI - 1: IMEM_PC_BITS_LO], instWord
-    );
-
-    // Instruction Decoder
-    Decoder #(INST_BIT_WIDTH, REG_INDEX_BIT_WIDTH) instrDecoder (
-        instWord, op1, op2, rd, rs1, rs2, imm16
-    );
-  
-    // Register File and Sign Extension
-    RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
-        clk, wrtEnReg, rd, rs1, rs2, wrtReg, imm16,
-        outRegd, outReg1, outReg2, imm32
-    );
-
-    // ALU and conditional
-    Execute #(OP_BIT_WIDTH, DBITS) execute (
-        outRegd, outReg1, outReg2, imm32, imm16,
-        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond,
-        outAlu, outCond
-    );
-
-    // Put the code for data memory and I/O here
-    // KEYS, SWITCHES, HEXS, and LEDS are memory mapped IO
-    DataMemory dataMemory(
-        clk, wrEnMem, outAlu, outReg2, SW, KEY,
-        LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
-    );
-
+    
+    initial begin
+        clk = 1'b0;
+        imm = 0;
+        useImm = 1'b0;
+        isJAL = 1'b0;
+        #1
+        OUT = pcOut;
+        $display("pcOut %h", OUT);
+        
+        clk = 1'b1;
+        imm = 0;
+        useImm = 1'b0;
+        isJAL = 1'b0;
+        #1
+        clk = 1'b0;
+        #1
+        OUT = pcOut;
+        $display("pcOut %h", OUT);
+        
+        clk = 1'b1;
+        imm = 128;
+        useImm = 1'b1;
+        isJAL = 1'b0;
+        #1
+        clk = 1'b0;
+        #1
+        OUT = pcOut;
+        $display("pcOut %h", OUT);
+        
+        clk = 1'b1;
+        imm = 32'hf0df00d0 >> 2;
+        useImm = 1'b1;
+        isJAL = 1'b1;
+        #1
+        clk = 1'b0;
+        #1
+        OUT = pcOut;
+        $display("pcOut %h", OUT);
+    end    
+    
 endmodule
