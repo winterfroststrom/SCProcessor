@@ -27,7 +27,7 @@ module SCProcController(
     assign useImmPc = (isBranch & outCond) | isJAL;
     output[DBITS - 1:0] pcIn, pcOld;
     assign pcIn = isJAL ? outAlu : imm32;
-    assign pcOld = isJAL ? {(DBITS){1'b0}} : pcOut;
+    assign pcOld = isJAL ? -4 : pcOut;
 
     // RegFetch
     output wrtEnReg;

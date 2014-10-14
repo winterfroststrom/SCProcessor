@@ -65,11 +65,11 @@ module TestExecute();
     parameter OP2_GTZ                      = 4'b1111;
 
     
-    wire[DBITS - 1:0] inRegd = 32'h00001111;
-    wire[DBITS - 1:0] inReg1 = 8;
-    wire[DBITS - 1:0] inReg2 = 3;
-    wire[DBITS - 1:0] imm32 = 1;
-    wire[15:0] immHi = 16'h2222;
+    reg[DBITS - 1:0] inRegd = 32'h00001111;
+    reg[DBITS - 1:0] inReg1 = 8;
+    reg[DBITS - 1:0] inReg2 = 3;
+    reg[DBITS - 1:0] imm32 = 1;
+    reg[15:0] immHi = 16'h2222;
     reg[OP_BIT_WIDTH - 1:0] op1, op2;
     wire isBranch = op1[2] & ~op1[0];
     wire isSW = op1[0] & op1[2];
@@ -98,8 +98,8 @@ module TestExecute();
         outAlu, outCond
     );
     initial begin
-        $display("rd=0x1111\tr1=8tr2=3");
-        $display("imm=1\timmhi=0x2222");
+        $display("rd=%h\tr1=%h\tr2=%h", inRegd, inReg1, inReg2);
+        $display("imm=%h\timmhi=%h", imm32, immHi);
         op1 = OP1_ALUR;     op2 = OP2_ADD;
         #1
         out1 = outAlu; out2 = outCond;
@@ -165,11 +165,75 @@ module TestExecute();
         out1 = outAlu; out2 = outCond;
         $display("AND:\t%d\t %b", out1, out2);
         
-        
         op1 = OP1_ALUI;     op2 = OP2_MVHI;
         #1
         out1 = outAlu; out2 = outCond;
-        $display("MVHI:\t%b\t %b", out1, out2);        
+        $display("MVHI:\t%b\t %b", out1, out2);
+        
+        inReg1 = 20;
+        inReg2 = 20;
+        $display("rd=%h\tr1=%h\tr2=%h", inRegd, inReg1, inReg2);
+        $display("imm=%h\timmhi=%h", imm32, immHi);
+        op1 = OP1_BCOND;     op2 = OP2_EQ;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("EQ:\t%d\t %b", out1, out2);
+
+        op1 = OP1_BCOND;     op2 = OP2_NE;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("NE:\t%d\t %b", out1, out2);
+
+        op1 = OP1_BCOND;     op2 = OP2_GT;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("GT:\t%d\t %b", out1, out2);
+        
+        op1 = OP1_BCOND;     op2 = OP2_GTE;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("GTE:\t%d\t %b", out1, out2);
+
+        op1 = OP1_BCOND;     op2 = OP2_GTEZ;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("GTEZ:\t%d\t %b", out1, out2);
+
+        inReg1 = -20;
+        inReg2 = -40;
+        $display("rd=%h\tr1=%h\tr2=%h", inRegd, inReg1, inReg2);
+        $display("imm=%h\timmhi=%h", imm32, immHi);
+
+        op1 = OP1_BCOND;     op2 = OP2_GT;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("GTEZ:\t%d\t %b", out1, out2);
+        
+        op1 = OP1_BCOND;     op2 = OP2_GTZ;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("GTZ:\t%d\t %b", out1, out2);
+        
+        op1 = OP1_BCOND;     op2 = OP2_LTEZ;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("LTEZ:\t%d\t %b", out1, out2);
+        
+        op1 = OP1_BCOND;     op2 = OP2_LTZ;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("LTZ:\t%d\t %b", out1, out2);
+        
+        op1 = OP1_BCOND;     op2 = OP2_EQ;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("EQ:\t%d\t %b", out1, out2);
+
+        op1 = OP1_BCOND;     op2 = OP2_NE;
+        #1
+        out1 = outAlu; out2 = outCond;
+        $display("NE:\t%d\t %b", out1, out2);
+        
     end
 
 endmodule

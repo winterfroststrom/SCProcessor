@@ -7,5 +7,5 @@ module PCLogic(pcOld, imm, useImm, pcNew);
 
     output[BIT_WIDTH - 1:0] pcNew;
 
-    assign pcNew = pcOld + (useImm ? imm << 2 : 4);
+    assign pcNew = pcOld + (useImm ? (imm + 1) << 2 : 4);
 endmodule
