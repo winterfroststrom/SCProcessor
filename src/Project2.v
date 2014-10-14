@@ -18,7 +18,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     parameter ADDR_LEDR                    = 32'hF0000004;
     parameter ADDR_LEDG                    = 32'hF0000008;
 
-    parameter IMEM_INIT_FILE               = "src/asm/Sorter2.mif";
+    parameter IMEM_INIT_FILE               = "src/asm/Sorter2_asm.mif";
     parameter IMEM_ADDR_BIT_WIDTH          = 11;
     parameter IMEM_DATA_BIT_WIDTH          = INST_BIT_WIDTH;
     parameter IMEM_PC_BITS_HI              = IMEM_ADDR_BIT_WIDTH + 2;
@@ -78,17 +78,24 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
     wire reset = ~lock;
 
+    // Controller
+    wire useImmPc;
+    wire[DBITS - 1:0] pcIn;
+    wire wrtEnReg;
+    wire[31:0] wrtReg;
+    wire useZeroExe, useImmExe, isMvhi, isBranchOrCond;
+    wire[OP_BIT_WIDTH-1:0] opAlu, opCond;    
+    wire wrEnMem;
+    SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
+        lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
+        useImmPc, pcIn, // PC
+        wrtEnReg, wrtReg, // RegFetch
+        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
+        wrEnMem // Memory
+    );
   
     // PC module
     wire[DBITS - 1: 0] pcOut;
-    wire isBranch;
-    assign isBranch = op1[2] & ~op1[0];
-    wire isJAL;
-    assign isJAL = op1[1] & op1[0];
-    wire[DBITS - 1:0] pcIn;
-    assign pcIn = isJAL ? outAlu : imm32;
-    wire useImmPc;
-    assign useImmPc = (isBranch & outCond) | isJAL;
     InstrFetch pc (clk, reset, pcIn, useImmPc, pcOut);
   
     // Instruction Memory
@@ -107,42 +114,26 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
   
     // Register File and Sign Extension
     wire[31:0] outRegd, outReg1, outReg2, imm32;
-    wire wrtEn;
-    assign wrtEn = ~op1[2] & lock;
-    wire[31:0] wrtData;
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
-        clk, wrtEn, rd, rs1, rs2, wrtData, imm16,
+        clk, wrtEnReg, rd, rs1, rs2, wrtReg, imm16,
         outRegd, outReg1, outReg2, imm32
     );
 
     // ALU and conditional
     wire[31:0] outAlu;
     wire outCond;
-    wire[OP_BIT_WIDTH-1:0] opAlu;
-    assign opAlu = op2;
-    wire isMvhi;
-    assign isMvhi = op1[3] & ~op1[1] & op2[0] & op2[1];
-    wire useZero;
-    assign useZero = (isBranch & op2[2]) | isMvhi;
-    wire useImmExe;
-    assign useImmExe = op1[3];
     Execute #(OP_BIT_WIDTH, DBITS) execute (
-        outRegd, outReg1, outReg2, imm32, imm16, useZero, useImmExe, isMvhi, opAlu, opCond,
+        outRegd, outReg1, outReg2, imm32, imm16,
+        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond,
         outAlu, outCond
     );
 
     // Put the code for data memory and I/O here
     // KEYS, SWITCHES, HEXS, and LEDS are memory mapped IO
-    wire wrMEM;
-    assign wrMEM = op1[0] & op1[2] & lock; // SW
     wire[31:0] outMem;
     DataMemory dataMemory(
-        clk, wrMEM, outAlu, outReg2, SW, KEY,
+        clk, wrEnMem, outAlu, outReg2, SW, KEY,
         LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
     );
-
-    assign wrtData =
-        op1[0] ? (op1[1] ? pcOut : outMem) : // JAL, LW
-        outAlu;
 
 endmodule

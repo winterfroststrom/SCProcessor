@@ -14,15 +14,15 @@ module ConditionalCheck(opCond, in0, outCond);
     11          NEZ     GTEZ    GTZ
     */
 
-    wire eq  = (in0 | 0) ? 1'b0 : 1'b1; // if in0 | 0 is zero, then eq should be 1
+    wire eq  = |{in0} ? 1'b0 : 1'b1; // if in0 | 0 is zero, then eq should be 1
     wire lt  = (in0[31]) ? 1'b1 : 1'b0; // Checks most sig bit 2s comp neg
-    wire lte = eq | lte;
+    wire lte = eq | lt;
 
     wire condResult = 
         (opCond[1:0] == 2'b01) ? eq  :
         (opCond[1:0] == 2'b10) ? lt  :
         (opCond[1:0] == 2'b11) ? lte :
-                                 0;
+                                 1'b0;
 
     assign outCond = (opCond[3]) ? ~condResult : condResult;
 
