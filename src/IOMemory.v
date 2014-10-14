@@ -22,10 +22,19 @@ module IOMemory(
     output[9:0] ledr;
     output[7:0] ledg;
 
-    RegisterResetless #(7) regHex0(clk, isHex, dataIn[6:0], hex0);
-    RegisterResetless #(7) regHex1(clk, isHex, dataIn[14:8], hex1);
-    RegisterResetless #(7) regHex2(clk, isHex, dataIn[22:16], hex2);
-    RegisterResetless #(7) regHex3(clk, isHex, dataIn[30:24], hex3);
+    wire[3:0] regHex0Out;
+    wire[3:0] regHex1Out;
+    wire[3:0] regHex2Out;
+    wire[3:0] regHex3Out;
+    RegisterResetless #(4) regHex0(clk, isHex, dataIn[3:0], regHex0Out);
+    RegisterResetless #(4) regHex1(clk, isHex, dataIn[11:8], regHex1Out);
+    RegisterResetless #(4) regHex2(clk, isHex, dataIn[19:16], regHex2Out);
+    RegisterResetless #(4) regHex3(clk, isHex, dataIn[27:24], regHex3Out);
+    SevenSeg sevenSeg0(regHex0Out, hex0);
+    SevenSeg sevenSeg1(regHex0Out, hex1);
+    SevenSeg sevenSeg2(regHex0Out, hex2);
+    SevenSeg sevenSeg3(regHex0Out, hex3);
+    
     RegisterResetless #(10) regLEDR(clk, isLedr, dataIn[9:0], ledr);
     RegisterResetless #(8) regLEDG(clk, isLedg, dataIn[7:0], ledg);
     

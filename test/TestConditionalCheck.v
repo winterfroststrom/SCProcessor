@@ -1,11 +1,4 @@
-module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
-    input  [9:0] SW;
-    input  [3:0] KEY;
-    input  CLOCK_50;
-    output [9:0] LEDR;
-    output [7:0] LEDG;
-    output [6:0] HEX0,HEX1,HEX2,HEX3;
-   
+module TestConditionalCheck();
     parameter DBITS                        = 32;
     parameter INST_SIZE                    = 32'd4;
     parameter INST_BIT_WIDTH               = 32;
@@ -70,77 +63,57 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     parameter OP2_NEZ                      = 4'b1101;
     parameter OP2_GTEZ                     = 4'b1110;
     parameter OP2_GTZ                      = 4'b1111;
-  
-  
-    //PLL, clock generation, and reset generation
-    wire clk, lock;
-    //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
-    PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
-    wire reset = ~lock;
 
-    wire useImmPc;
-    wire[DBITS - 1:0] pcIn;
-    wire wrtEnReg;
-    wire[31:0] wrtReg;
-    wire useZeroExe, useImmExe, isMvhi, isBranchOrCond;
-    wire[OP_BIT_WIDTH-1:0] opAlu, opCond;    
-    wire wrEnMem;
-    
-    wire[DBITS - 1: 0] pcOut;
-    
-    wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
-    
-    wire[OP_BIT_WIDTH - 1: 0] op1, op2;
-    wire[REG_INDEX_BIT_WIDTH - 1: 0] rd, rs1, rs2;
-    wire[INST_BIT_WIDTH - OP_BIT_WIDTH * 2 - REG_INDEX_BIT_WIDTH * 2 - 1: 0] imm16;
-
-    wire[31:0] outRegd, outReg1, outReg2, imm32;
-
-    wire[31:0] outAlu;
-    wire outCond;
-
-    wire[31:0] outMem;
-    
-    // Controller
-    SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
-        lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-        useImmPc, pcIn, // PC
-        wrtEnReg, wrtReg, // RegFetch
-        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
-        wrEnMem // Memory
+    reg[OP_BIT_WIDTH - 1:0] op2;
+    reg out0;
+    reg out1;
+    reg out2;
+    wire outCond0;
+    wire outCond1;
+    wire outCond2;
+    ConditionalCheck #(DBITS) unit0(
+        op2, -1, outCond0
     );
-  
-    // PC module
-    InstrFetch pc (clk, reset, pcIn, useImmPc, pcOut);
-  
-    // Instruction Memory
-    InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (
-        pcOut[IMEM_PC_BITS_HI - 1: IMEM_PC_BITS_LO], instWord
+    ConditionalCheck #(DBITS) unit1(
+        op2, 0, outCond1
     );
+    ConditionalCheck #(DBITS) unit2(
+        op2, 1, outCond2
+    );
+    initial begin
+        op2 = OP2_F;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("F: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
+        op2 = OP2_T;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("T: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
+        op2 = OP2_EQ;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("EQ: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
+        op2 = OP2_NE;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("NE: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
+        op2 = OP2_LT;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("LT: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
+        op2 = OP2_GTE;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("GTE: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
+        op2 = OP2_LTE;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("LTE: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
+        op2 = OP2_GT;
+        #1
+        out0 = outCond0; out1 = outCond1; out2 = outCond2;
+        $display("GT: -1 ->\t %b, 0 ->\t %b, 1 ->\t %b", out0, out1, out2);
 
-    // Instruction Decoder
-    Decoder #(INST_BIT_WIDTH, REG_INDEX_BIT_WIDTH) instrDecoder (
-        instWord, op1, op2, rd, rs1, rs2, imm16
-    );
-  
-    // Register File and Sign Extension
-    RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
-        clk, wrtEnReg, rd, rs1, rs2, wrtReg, imm16,
-        outRegd, outReg1, outReg2, imm32
-    );
-
-    // ALU and conditional
-    Execute #(OP_BIT_WIDTH, DBITS) execute (
-        outRegd, outReg1, outReg2, imm32, imm16,
-        useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond,
-        outAlu, outCond
-    );
-
-    // Put the code for data memory and I/O here
-    // KEYS, SWITCHES, HEXS, and LEDS are memory mapped IO
-    DataMemory dataMemory(
-        clk, wrEnMem, outAlu, outReg2, SW, KEY,
-        LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
-    );
+    end
 
 endmodule

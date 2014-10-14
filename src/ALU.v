@@ -16,7 +16,7 @@ module ALU(aluOp, inA, inB, outAlu);
     11  NAND    NOR     NXOR
     */
 
-    assign arithResult = inA + ((aluOp[0]) ? inB : (~inB + 1)); // add 4'bxxx0 or sub 4'bxxx1
+    assign arithResult = inA + ((aluOp[0]) ? (~inB + 1) : inB); // add 4'bxxx0 or sub 4'bxxx1
     assign bitResult = 
             aluOp[0] ? inA | inB : // or  4'bxxx1
             aluOp[1] ? inA ^ inB : // xor 4'bxx1x

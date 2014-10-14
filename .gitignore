@@ -11,3 +11,5 @@
 db/
 incremental_db/
 src/asm/SCAssembler
+work/_temp/
+work/@*

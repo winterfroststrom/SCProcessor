@@ -19,9 +19,9 @@ module ConditionalCheck(opCond, in0, outCond);
     wire lte = eq | lt;
 
     wire condResult = 
-        (opCond[1:0] == 2'b01) ? eq  :
-        (opCond[1:0] == 2'b10) ? lt  :
-        (opCond[1:0] == 2'b11) ? lte :
+        (~opCond[1] & opCond[0]) ? eq  :
+        (opCond[1] & ~opCond[0]) ? lt  :
+        (opCond[1] & opCond[0]) ? lte :
                                  1'b0;
 
     assign outCond = (opCond[3]) ? ~condResult : condResult;
