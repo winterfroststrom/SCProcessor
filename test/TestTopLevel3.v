@@ -120,6 +120,7 @@ module TestTopLevel3();
     wire[31:0] outMem;
     
     // Controller
+    wire pcWrtEn = 1'b1;
     SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
         lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
         useImmPc, pcIn, isJal, // PC
@@ -129,7 +130,7 @@ module TestTopLevel3();
     );
   
     // PC module
-    InstrFetch pc (clk, reset, useImmPc, pcIn, isJal, pcAdded, pcOut);
+    InstrFetch pc (clk, reset, pcWrtEn, useImmPc, pcIn, isJal, pcAdded, pcOut);
   
 /*    wire[31:0] instWordReal;
     // Instruction Memory
@@ -187,7 +188,65 @@ module TestTopLevel3();
 */
     
     initial begin
-        $display("//-- @ 0x00000230 :	 ADDI	 T0,FP,0X37");
+    
+    $display("-- @ 0x00000054 :	 ADDI	 S0,S0,9");
+    instWord = 32'h80660009;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+    $display("-- @ 0x00000058 :	 SW	 S0,0(A1)");
+    instWord = 32'h50160000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+    num32 = outAlu; $display("---addr %h", num32);
+    num32 = outReg2; $display("outReg2 %h", num32);
+    num32 = outMem; $display("mem %h", num32);
+
+    $display("-- @ 0x0000005c :	 ADDI	 S0,S0,13");
+    instWord = 32'h8066000d;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+    $display("-- @ 0x00000060 :	 ADDI	 A1,A1,4");
+    instWord = 32'h80110004;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+    $display("-- @ 0x00000064 :	 SW	 S0,0(A1)");
+    instWord = 32'h50160000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+    num32 = outAlu; $display("---addr %h", num32);
+    num32 = outReg2; $display("outReg2 %h", num32);
+    num32 = outMem; $display("mem %h", num32);
+
+
+//-- @ 0x00000080 :	 XOR	 FP,FP,FP
+//06ddd000;
+//-- @ 0x00000084 :	 NAND	 FP,FP,FP
+//0cddd000;
+//-- @ 0x00000088 :	 SW	 FP,OFSHEX(GP)
+//50cd0000;
+
+    $display("||||||||||||||||||||||||||||||||||||||||||||");
+    $display("-- @ 0x0000008c :	 XOR	 A1,A1,a1");
+    instWord = 32'h06111000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+
+ //   num32 = wrtReg; $display("wrtReg %h", num32);
+    $display("-- @ 0x00000090 :	 LW	 A0,0(A1)");
+    instWord = 32'h90010000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+
+    num32 = outAlu; $display("---addr %h", num32);
+    num32 = outMem; $display("mem %h", num32);
+    num32 = outRegd; $display("regd %h", num32);
+    $display("-- @ 0x00000098 :	 ADDI	 A1,A1,4");
+    instWord = 32'h80110004;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+
+//    num32 = wrtReg; $display("wrtReg %h", num32);
+    $display("-- @ 0x0000009c :	 LW	 A0,0(A1)");
+    instWord = 32'h90010000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+
+        num32 = outRegd; $display("regd %h", num32);
+    num32 = outMem; $display("mem %h", num32);
+    num32 = outAlu; $display("---addr %h", num32);
+    
+/*        $display("//-- @ 0x00000230 :	 ADDI	 T0,FP,0X37");
         instWord = 32'h804d0037;
         CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
         num32 = wrtReg; $display("wrtReg: %h", num32);

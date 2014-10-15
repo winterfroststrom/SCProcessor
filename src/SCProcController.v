@@ -1,6 +1,6 @@
 module SCProcController(
-    lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-    useImmPc, pcIn, isJal,
+    clk, lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
+    useImmPc, pcIn, isJal, pcWrtEn,
     wrtEnReg, wrtReg,
     useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond,
     wrtEnMem
@@ -10,7 +10,7 @@ module SCProcController(
     parameter DBITS;
     parameter OP2_SUB;
 
-    input lock;
+    input lock, clk;
     input[DBITS - 1:0] pcAdded, pcOut;
     input[OP_BIT_WIDTH - 1:0] op1, op2;
     input[DBITS - 1:0] imm32, outAlu;
@@ -20,6 +20,14 @@ module SCProcController(
     wire isBranch = op1[2] & ~op1[0];
 	wire isSW = op1[0] & op1[2];
     
+    reg writeCycle;
+    
+    initial writeCycle = 1'b0;
+    
+    always @ (posedge clk) begin
+        writeCycle <= ~writeCycle;
+    end
+    
     
     // InstrFetch
     output isJal;
@@ -28,10 +36,12 @@ module SCProcController(
     assign useImmPc = isBranch & outCond;
     output[DBITS - 1:0] pcIn;
     assign pcIn = isJal ? outAlu : imm32;
-
+    output pcWrtEn;
+    assign pcWrtEn = ~writeCycle;
+    
     // RegFetch
     output wrtEnReg;
-    assign wrtEnReg = ~op1[2] & lock;
+    assign wrtEnReg = ~op1[2] & lock & writeCycle;
     output[31:0] wrtReg;
     assign wrtReg =
         op1[0] ? (op1[1] ? pcAdded : outMem) : // JAL, LW
@@ -54,6 +64,6 @@ module SCProcController(
 
     // Memory
     output wrtEnMem;
-    assign wrtEnMem = isSW & lock; // SW
+    assign wrtEnMem = isSW & lock & writeCycle; // SW
 
 endmodule

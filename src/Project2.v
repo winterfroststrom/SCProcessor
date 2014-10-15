@@ -76,7 +76,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
     wire clk, lock;
 //    assign clk = ~KEY[0];
-    //assign lock = 1'b1;
+//    assign lock = 1'b1;
     PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
     wire reset = ~lock;
 
@@ -111,10 +111,10 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     wire[31:0] outMem;
     
     // Controller
-    wire pcWrtEn = 1'b1;
+    wire pcWrtEn;
     SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
-        lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-        useImmPc, pcIn, isJal, // PC
+        clk, lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
+        useImmPc, pcIn, isJal, pcWrtEn, // PC
         wrtEnReg, wrtReg, // RegFetch
         useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
         wrEnMem // Memory

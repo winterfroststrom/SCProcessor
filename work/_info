@@ -18,7 +18,7 @@ r1
 Z9 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/ALU.v|
 Z10 o-work work -O0
 Z11 n@a@l@u
-Z12 !s108 1413353196.475000
+Z12 !s108 1413367219.151000
 Z13 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/ALU.v|
 !i10b 1
 !s85 0
@@ -38,17 +38,17 @@ r1
 Z20 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/ConditionalCheck.v|
 R10
 Z21 n@conditional@check
-Z22 !s108 1413353196.946000
+Z22 !s108 1413367219.557000
 Z23 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/ConditionalCheck.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vDataMemory
-Z24 !s100 GAP8a7Lii5V6F2AaG]BXU1
-Z25 IWLObL^RL[@3Hkc]:e47g51
+Z24 !s100 @2RJQ?iZ2nH3EBRNkHFdN1
+Z25 IMdCQEYTTen>9BJ<m:3T_i2
 Z26 V=hcHB0WPNNYO^SRk7HWb73
 R4
-Z27 w1413032230
+Z27 w1413369030
 Z28 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemory.v
 Z29 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemory.v
 L0 1
@@ -58,17 +58,17 @@ r1
 Z30 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemory.v|
 R10
 Z31 n@data@memory
-Z32 !s108 1413353197.254000
+Z32 !s108 1413369050.701000
 Z33 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemory.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vDataMemoryController
-Z34 !s100 =Td8CQgi?mBA?KiTbo^FR3
-Z35 I:Ae2lAh]N8M4CMgM`YNFo3
+Z34 !s100 Pj68i?W^cUne4a?d6jC[o0
+Z35 I[5Znj8_TU>8UP6OE_F@cE3
 Z36 VW1@2i>??X1A[7_eVnk=]50
 R4
-Z37 w1413295800
+Z37 w1413361226
 Z38 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v
 Z39 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v
 L0 1
@@ -78,7 +78,7 @@ r1
 Z40 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v|
 R10
 Z41 n@data@memory@controller
-Z42 !s108 1413353197.496000
+Z42 !s108 1413367219.876000
 Z43 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v|
 !i10b 1
 !s85 0
@@ -98,7 +98,7 @@ r1
 Z50 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/Decoder.v|
 R10
 Z51 n@decoder
-Z52 !s108 1413353197.797000
+Z52 !s108 1413367220.057000
 Z53 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/Decoder.v|
 !i10b 1
 !s85 0
@@ -118,7 +118,7 @@ r1
 Z60 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/Execute.v|
 R10
 Z61 n@execute
-Z62 !s108 1413353198.111000
+Z62 !s108 1413367220.216000
 Z63 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/Execute.v|
 !i10b 1
 !s85 0
@@ -138,27 +138,27 @@ r1
 Z70 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v|
 R10
 Z71 n@inst@memory
-Z72 !s108 1413353198.406000
+Z72 !s108 1413367220.519000
 Z73 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vInstrFetch
-Z74 Il@aKKBWHR@5dc;gaFUeZG2
-Z75 VLQ68dFAH@QTUPgXgZ78Z93
+Z74 !s100 >AN[9>T5`m=HMI[41]G:H3
+Z75 I65D?L1d^Uo5>nI]18A9>i0
+Z76 V1J7ceWDJQ^eLJ>zQIA@K90
 R4
-Z76 w1413350560
-Z77 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstrFetch.v
-Z78 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/InstrFetch.v
+Z77 w1413358544
+Z78 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstrFetch.v
+Z79 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/InstrFetch.v
 L0 1
 R8
 r1
 31
-Z79 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstrFetch.v|
+Z80 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstrFetch.v|
 R10
-Z80 n@instr@fetch
-Z81 !s100 [l]2Z;kJD?eil>9f]Hl]83
-Z82 !s108 1413353198.746000
+Z81 n@instr@fetch
+Z82 !s108 1413367220.772000
 Z83 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstrFetch.v|
 !i10b 1
 !s85 0
@@ -178,7 +178,7 @@ r1
 Z90 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/IOMemory.v|
 R10
 Z91 n@i@o@memory
-Z92 !s108 1413353199.035000
+Z92 !s108 1413367221.004000
 Z93 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/IOMemory.v|
 !i10b 1
 !s85 0
@@ -198,27 +198,27 @@ r1
 Z100 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/PCLogic.v|
 R10
 Z101 n@p@c@logic
-Z102 !s108 1413353199.373000
+Z102 !s108 1413367221.327000
 Z103 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/PCLogic.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vProject2
-Z104 !s100 9VheUo6jl>>SfV`Q6mj?a2
-Z105 I]fXe^0eT>3ePFE5LZg5j=1
-Z106 V6>PW635`Vdi4=438^HXKc0
+Z104 IZ]a`eM^9QDMo6TKcFCMX12
+Z105 V;eLg5^KOmG9Lf;8ZDW75?3
 R4
-Z107 w1413346271
-Z108 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v
-Z109 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v
+Z106 w1413364484
+Z107 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v
+Z108 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v
 L0 1
 R8
 r1
 31
-Z110 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v|
+Z109 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v|
 R10
-Z111 n@project2
-Z112 !s108 1413353199.689000
+Z110 n@project2
+Z111 !s100 BAX?;HAORLom5l>2O>50e2
+Z112 !s108 1413367221.659000
 Z113 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v|
 !i10b 1
 !s85 0
@@ -238,7 +238,7 @@ r1
 Z120 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegFetch.v|
 R10
 Z121 n@reg@fetch
-Z122 !s108 1413353200.111000
+Z122 !s108 1413367221.885000
 Z123 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegFetch.v|
 !i10b 1
 !s85 0
@@ -258,17 +258,17 @@ r1
 Z130 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/Register.v|
 R10
 Z131 n@register
-Z132 !s108 1413353200.459000
+Z132 !s108 1413367222.136000
 Z133 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/Register.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vRegisterFile
-Z134 !s100 7M^QD:R>RzEe::Lnjc]WS0
-Z135 I[WANiVWXiIYhPQzBzfZ:B2
+Z134 !s100 57oRmDNCRK1[O^KB:VdoM1
+Z135 I^V6H916Wg]K9R5[_6UOZL1
 Z136 Vc=4J4`k`z:mZnI4l@XZBB2
 R4
-Z137 w1413291217
+Z137 w1413366276
 Z138 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v
 Z139 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v
 L0 1
@@ -278,7 +278,7 @@ r1
 Z140 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v|
 R10
 Z141 n@register@file
-Z142 !s108 1413353200.724000
+Z142 !s108 1413367222.431000
 Z143 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v|
 !i10b 1
 !s85 0
@@ -298,7 +298,7 @@ r1
 Z150 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterResetless.v|
 R10
 Z151 n@register@resetless
-Z152 !s108 1413353201.015000
+Z152 !s108 1413367222.990000
 Z153 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterResetless.v|
 !i10b 1
 !s85 0
@@ -308,7 +308,7 @@ Z154 !s100 TH9<X`7:=T[YaJGGMOWI=2
 Z155 Imf@OHWA9mbCEQhC]ZKZnd0
 Z156 VkaPO5i_aL6cciDIhdzfMY2
 R4
-Z157 w1413294253
+Z157 w1413357899
 Z158 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v
 Z159 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v
 L0 1
@@ -318,47 +318,47 @@ r1
 Z160 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v|
 R10
 Z161 n@register@write@always
-Z162 !s108 1413353201.312000
+Z162 !s108 1413367223.240000
 Z163 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vRegMemory
-Z164 !s100 ZaMoUnG_E8H`d3KZkP^0F3
-Z165 IcOBYFUAX]LJBl;O2;G[Z30
-Z166 VC15]AU>a]^QAEFZkgDL6Y2
+Z164 IKao::FZFb^8A6a7nVGSYA0
+Z165 VC15]AU>a]^QAEFZkgDL6Y2
 R4
-Z167 w1413291371
-Z168 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v
-Z169 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v
+Z166 w1413371861
+Z167 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v
+Z168 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v
 L0 1
 R8
 r1
 31
-Z170 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v|
+Z169 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v|
 R10
-Z171 n@reg@memory
-Z172 !s108 1413353201.674000
+Z170 n@reg@memory
+Z171 !s100 P0G14MdN?A3PzQXPGEe4O3
+Z172 !s108 1413371866.574000
 Z173 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vSCProcController
-Z174 IWHo[n5iOj=8=ODMV`32cQ3
-Z175 VfS2V^W:jUQ_h;9fLE;;mZ1
+Z174 !s100 idURbG9M=h:XKKieIkcKz0
+Z175 IWHo[n5iOj=8=ODMV`32cQ3
+Z176 VfS2V^W:jUQ_h;9fLE;;mZ1
 R4
-Z176 w1413353155
-Z177 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v
-Z178 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v
+Z177 w1413353155
+Z178 8C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v
+Z179 FC:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v
 L0 1
 R8
 r1
 31
-Z179 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v|
+Z180 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v|
 R10
-Z180 n@s@c@proc@controller
-Z181 !s100 idURbG9M=h:XKKieIkcKz0
-Z182 !s108 1413353202.727000
+Z181 n@s@c@proc@controller
+Z182 !s108 1413367224.444000
 Z183 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v|
 !i10b 1
 !s85 0
@@ -378,7 +378,7 @@ r1
 Z190 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/SevenSeg.v|
 R10
 Z191 n@seven@seg
-Z192 !s108 1413353203.177000
+Z192 !s108 1413367224.760000
 Z193 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/SevenSeg.v|
 !i10b 1
 !s85 0
@@ -398,7 +398,7 @@ r1
 Z200 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/src/SignExtension.v|
 R10
 Z201 n@sign@extension
-Z202 !s108 1413353203.587000
+Z202 !s108 1413367225.149000
 Z203 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/src/SignExtension.v|
 !i10b 1
 !s85 0
@@ -418,7 +418,7 @@ r1
 Z210 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestALU.v|
 R10
 Z211 n@test@a@l@u
-Z212 !s108 1413353203.990000
+Z212 !s108 1413367225.362000
 Z213 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestALU.v|
 !i10b 1
 !s85 0
@@ -438,7 +438,7 @@ r1
 Z220 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestConditionalCheck.v|
 R10
 Z221 n@test@conditional@check
-Z222 !s108 1413353204.370000
+Z222 !s108 1413367225.629000
 Z223 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestConditionalCheck.v|
 !i10b 1
 !s85 0
@@ -458,7 +458,7 @@ r1
 Z230 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestDataMemory.v|
 R10
 Z231 n@test@data@memory
-Z232 !s108 1413353206.579000
+Z232 !s108 1413367227.169000
 Z233 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestDataMemory.v|
 !i10b 1
 !s85 0
@@ -478,7 +478,7 @@ r1
 Z240 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestExecute.v|
 R10
 Z241 n@test@execute
-Z242 !s108 1413353205.083000
+Z242 !s108 1413367225.866000
 Z243 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestExecute.v|
 !i10b 1
 !s85 0
@@ -498,7 +498,7 @@ r1
 Z250 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestInstrFetch.v|
 R10
 Z251 n@test@instr@fetch
-Z252 !s108 1413353207.093000
+Z252 !s108 1413367227.485000
 Z253 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestInstrFetch.v|
 !i10b 1
 !s85 0
@@ -518,7 +518,7 @@ r1
 Z260 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestIOMemory.v|
 R10
 Z261 n@test@i@o@memory
-Z262 !s108 1413353206.308000
+Z262 !s108 1413367226.889000
 Z263 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestIOMemory.v|
 !i10b 1
 !s85 0
@@ -538,7 +538,7 @@ r1
 Z270 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestRegFetch.v|
 R10
 Z271 n@test@reg@fetch
-Z272 !s108 1413353206.095000
+Z272 !s108 1413367226.670000
 Z273 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestRegFetch.v|
 !i10b 1
 !s85 0
@@ -558,7 +558,7 @@ r1
 Z280 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel.v|
 R10
 Z281 n@test@top@level
-Z282 !s108 1413353205.850000
+Z282 !s108 1413369265.115000
 Z283 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel.v|
 !i10b 1
 !s85 0
@@ -578,18 +578,18 @@ r1
 Z290 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel2.v|
 R10
 Z291 n@test@top@level2
-Z292 !s108 1413353399.242000
+Z292 !s108 1413367227.815000
 Z293 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel2.v|
 !i10b 1
 !s85 0
 !s101 -O0
 vTestTopLevel3
 !i10b 1
-!s100 3_gBRzW7ORCZ:f38LKiTB2
-IL2h>=l1L]KA_c>eW7ViGI3
+!s100 VX2c?Bdf?FIH8`@iO1S;12
+I?;8`mPlH^^HV=N8UaIY@G3
 Z294 VNTD@H6Fm3ekOJQFWMLIYH3
 R4
-w1413354193
+w1413372052
 Z295 8C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v
 Z296 FC:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v
 L0 1
@@ -597,7 +597,7 @@ R8
 r1
 !s85 0
 31
-!s108 1413354195.751000
+!s108 1413372054.961000
 !s107 C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v|
 Z297 !s90 -reportprogress|300|-work|work|C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v|
 !s101 -O0
