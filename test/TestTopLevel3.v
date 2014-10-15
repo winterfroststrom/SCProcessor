@@ -222,12 +222,28 @@ instWord = 32'h80220004;
         num32 = outReg1; $display("reg1: %h", num32);
         
 instWord = 32'h90020000;
-        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        CLOCK_50 = 1'b1; #1 
+            $display("-------------");
         num32 = pcOut >> 2; $display("pcOut %h", num32);
         num32 = wrtReg; $display("wrtReg: %h", num32);
         num32 = outAlu; $display("addr: %h", num32);
+        num32 = imm32; $display("imm: %h", num32);
+        num32 = outReg1; $display("reg1: %h", num32);
+        num32 = outRegd; $display("regd: %h", num32);
+        num32 = outMem; $display("outMem: %h", num32);
+        CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        num32 = wrtReg; $display("wrtReg: %h", num32);
+        num32 = outAlu; $display("addr: %h", num32);
+        num32 = imm32; $display("imm: %h", num32);
+        num32 = outReg1; $display("reg1: %h", num32);
+        num32 = outRegd; $display("regd: %h", num32);
+        num32 = outMem; $display("outMem: %h", num32);
 instWord = 32'h69050002;
         CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        num32 = outReg1; $display("reg1: %h", num32);
+        num32 = outReg2; $display("reg2: %h", num32);
 
     num32 = useImmPc; $display("useImmPc: %h", num32);
   /*     

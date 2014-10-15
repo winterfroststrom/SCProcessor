@@ -83,8 +83,8 @@ module TestTopLevel2();
     wire reset = ~lock;
 
     // Controller Output
-    wire useImmPc;
-    wire[DBITS - 1:0] pcIn, pcOld;
+    wire useImmPc, isJal;
+    wire[DBITS - 1:0] pcIn;
     wire wrtEnReg;
     wire[31:0] wrtReg;
     wire useZeroExe, useImmExe, isMvhi, isBranchOrCond;
@@ -92,7 +92,7 @@ module TestTopLevel2();
     wire wrEnMem;
 
     // InstrFetch output
-    wire[DBITS - 1: 0] pcOut;
+    wire[DBITS - 1: 0] pcAdded, pcOut;
 
     // InstMemory output
 //    wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
@@ -114,15 +114,15 @@ module TestTopLevel2();
     
     // Controller
     SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
-        lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-        useImmPc, pcIn, pcOld, // PC
+        lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
+        useImmPc, pcIn, isJal, // PC
         wrtEnReg, wrtReg, // RegFetch
         useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
         wrEnMem // Memory
     );
   
     // PC module
-    InstrFetch pc (clk, reset, useImmPc, pcIn, pcOld, pcOut);
+    InstrFetch pc (clk, reset, useImmPc, pcIn, isJal, pcAdded, pcOut);
   
     wire[31:0] instWordReal;
     // Instruction Memory
@@ -137,7 +137,7 @@ module TestTopLevel2();
   
     // Register File and Sign Extension
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
-        clk, wrtEnReg, rd, rs1, rs2, wrtReg, imm16,
+        clk, wrtEnReg, isJal, rd, rs1, rs2, wrtReg, imm16,
         outRegd, outReg1, outReg2, imm32
     );
 
@@ -191,9 +191,9 @@ module TestTopLevel2();
 -- @ 0x00000074 :	 BEQ	 A0,A1,ADDWORKS
 0000001d : 61010004;
     */
-    
+ /*   
     initial begin
-    
+ 
 instWord = 32'h80860bef;
         CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
         num32 = pcOut >> 2; $display("pcOut %h", num32);
@@ -238,7 +238,118 @@ instWord = 32'h61010004;
         num32 = pcOut >> 2; $display("pcOut %h", num32);
     num32 = outAlu; $display("alu: %h", num32);
     num32 = useImmPc; $display("useImmPc: %h", num32);
-       
-    end
+
+        #1
+instWord = {OP1_JAL, OP2_ADD, 4'h0, 4'h0, 16'h0008};
+        CLOCK_50 = 1'b1; #1 
+        num32 = outAlu; $display("alu: %h", num32);
     
+        CLOCK_50 = 1'b0; #1
+        // note, rs1 contains 1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        num32 = wrtReg >> 2; $display("wrtReg %h", num32);
+    num32 = rs1; $display("r: %h", num32);
+    num32 = outRegd >> 2; $display("rd: %h", num32);    
+    num32 = pcAdded >> 2; $display("pcAdded: %h", num32);
+    num32 = outAlu; $display("alu: %h", num32);
+    num32 = imm32; $display("imm32: %h", num32);
+    num32 = pcIn; $display("pcIn: %h", num32);
+    num32 = imm32; $display("imm32: %h", num32);
+    num32 = useImmPc; $display("useImmPc: %h", num32);
+    num32 = {useImmExe, useZeroExe}; $display("useImmExe, useZeroExe: %h", num32);
+
+    instWord = 32'h00145000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+    
+    end
+    */
+      
+    initial begin
+// on read hardware, the pcAdded does not update instantly,
+// so in simulation, the pcOut value is one ahead of where it should be
+instWord = {OP1_JAL, OP2_ADD, 4'h0, 4'h0, 16'h009a};
+        CLOCK_50 = 1'b1; #1     CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        
+//-- @ 0x00000268 :	 ADDI	 S0,S0,1
+    instWord = 32'h80660001;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+//-- @ 0x0000026c :	 SW	 S0,OFSLEDG(GP)
+    instWord = 32'h50c60008;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+//-- @ 0x00000270 :	 ADDI	 T1,FP,JALRET
+    instWord = 32'h805d0278;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        num32 = outRegd >> 2; $display("t1 rd %h should be 9e", num32);
+        num32 = pcAdded >> 2; $display("pcAdded %h should be 9e", num32);
+//-- @ 0x00000274 :	 JAL	 T0,JALTARG(FP)
+    instWord = 32'hb04d009f;
+        CLOCK_50 = 1'b1; #1 
+        num32 = pcOut >> 2; $display("t0 pcOut %h should be 9d", num32);
+        
+        num32 = pcAdded >> 2; $display("t0 rd %h should be 9e", num32);
+        num32 = outRegd >> 2; $display("t0 rd %h should be 9e", num32);
+
+        CLOCK_50 = 1'b0; #1
+        // note adds an extra one because half cycle is add
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        num32 = pcAdded >> 2; $display("t0 rd %h should be 9e", num32);
+        num32 = outRegd >> 2; $display("t0 rd %h should be 9e", num32);
+  
+        
+//-- @ 0x0000027c :	 BNE	 T0,T1,JALFAILED
+    instWord = 32'h69450001;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        num32 = outReg1 >> 2; $display("t0 %h should be 9e", num32);
+        num32 = outReg2 >> 2; $display("t1 %h should be 9e", num32);
+        num32 = useImmPc; $display("branch? %h", num32);
+//-- @ 0x00000280 :	 JAL	 T1,0(T0)
+    instWord = 32'hb0540000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        num32 = outRegd >> 2; $display("rd %h", num32);
+        num32 = outReg1 >> 2; $display("rs1 %h", num32);
+
+//        -- @ 0x00000278 :	 BT	 T0,T0,JALWORKS
+    instWord = 32'h68440006;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+
+
+//-- @ 0x00000294 :	 ADDI	 S0,S0,1
+    instWord = 32'h80660001;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+//-- @ 0x00000298 :	 SW	 S0,OFSLEDG(GP)
+    // note, doesn't store because gp is not set correctly
+    instWord = 32'h50c60008;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+    
+        
+/*        //-- @ 0x00000284 :	 NAND	 T0,FP,FP
+    instWord = 32'h0c4dd000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+//-- @ 0x00000288 :	 SW	 T0,OFSLEDR(GP)
+    instWord = 32'h50c40004;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+//-- @ 0x0000028c :	 SW	 T0,OFSHEX(GP)
+    instWord = 32'h50c40000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+//-- @ 0x00000290 :	 BT	 T0,T0,JALFAILED
+    instWord = 32'h6844fffc;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = pcOut >> 2; $display("pcOut %h", num32);
+    */
+    end
+    // t0 contained 80
+    // t1 contained 81
 endmodule

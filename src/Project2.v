@@ -75,14 +75,14 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     //PLL, clock generation, and reset generation
     //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
     wire clk, lock;
-    assign clk = ~KEY[0];
-    assign lock = 1'b1;
-//    PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
+//    assign clk = ~KEY[0];
+//    assign lock = 1'b1;
+    PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
     wire reset = ~lock;
 
     // Controller Output
-    wire useImmPc;
-    wire[DBITS - 1:0] pcIn, pcOld;
+    wire useImmPc, isJal;
+    wire[DBITS - 1:0] pcIn;
     wire wrtEnReg;
     wire[31:0] wrtReg;
     wire useZeroExe, useImmExe, isMvhi, isBranchOrCond;
@@ -90,7 +90,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     wire wrEnMem;
 
     // InstrFetch output
-    wire[DBITS - 1: 0] pcOut;
+    wire[DBITS - 1: 0] pcAdded, pcOut;
 
     // InstMemory output
     wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
@@ -112,15 +112,15 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     
     // Controller
     SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
-        lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-        useImmPc, pcIn, pcOld, // PC
+        lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
+        useImmPc, pcIn, isJal, // PC
         wrtEnReg, wrtReg, // RegFetch
         useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
         wrEnMem // Memory
     );
   
     // PC module
-    InstrFetch pc (clk, reset, useImmPc, pcIn, pcOld, pcOut);
+    InstrFetch pc (clk, reset, useImmPc, pcIn, isJal, pcAdded, pcOut);
   
     // Instruction Memory
     InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (
@@ -134,7 +134,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
   
     // Register File and Sign Extension
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
-        clk, wrtEnReg, rd, rs1, rs2, wrtReg, imm16,
+        clk, wrtEnReg, isJal, rd, rs1, rs2, wrtReg, imm16,
         outRegd, outReg1, outReg2, imm32
     );
 
