@@ -5,13 +5,6 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	Register
 
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterFile.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module RegisterFile
-
-Top level modules:
-	RegisterFile
-
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/SCProcController.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module SCProcController
@@ -53,13 +46,6 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 
 Top level modules:
 	TestIOMemory
-
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegisterWriteAlways.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module RegisterWriteAlways
-
-Top level modules:
-	RegisterWriteAlways
 
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestInstrFetch.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestInstrFetch.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
@@ -103,6 +89,20 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	DataMemory
 
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel2.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel2.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestTopLevel2
+
+Top level modules:
+	TestTopLevel2
+
+} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module TestTopLevel3
+
+Top level modules:
+	TestTopLevel3
+
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/Decoder.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/Decoder.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module Decoder
@@ -117,27 +117,6 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 Top level modules:
 	SignExtension
 
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/test/TestTopLevel3.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module TestTopLevel3
-
-Top level modules:
-	TestTopLevel3
-
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/DataMemoryController.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module DataMemoryController
-
-Top level modules:
-	DataMemoryController
-
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/RegMemory.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module RegMemory
-
-Top level modules:
-	RegMemory
-
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/InstMemory.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling module InstMemory
@@ -151,13 +130,6 @@ Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 
 Top level modules:
 	TestRegFetch
-
-} {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/Project2.v
-Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
--- Compiling module Project2
-
-Top level modules:
-	Project2
 
 } {} {}} C:/Users/Sparky/Documents/quartus/SCProcessor/src/IOMemory.v {1 {vlog -work work C:/Users/Sparky/Documents/quartus/SCProcessor/src/IOMemory.v
 Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012

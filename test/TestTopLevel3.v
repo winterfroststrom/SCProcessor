@@ -1,5 +1,19 @@
 module TestTopLevel3();
 
+    reg [9:0] SW;
+    reg [3:0] KEY;
+    reg CLOCK_50;
+    reg[31:0] instWord;
+    wire [9:0] LEDR;
+    wire [7:0] LEDG;
+    wire [6:0] HEX0,HEX1,HEX2,HEX3;
+    reg num1;
+    reg[3:0] num4;
+    reg[15:0] num16, num160, num161;
+    reg[31:0] num32, num320, num321;
+    
+
+
     parameter DBITS                        = 32;
     parameter INST_SIZE                    = 32'd4;
     parameter INST_BIT_WIDTH               = 32;
@@ -64,16 +78,9 @@ module TestTopLevel3();
     parameter OP2_NEZ                      = 4'b1101;
     parameter OP2_GTEZ                     = 4'b1110;
     parameter OP2_GTZ                      = 4'b1111;
+    
 
-    reg [9:0] SW;
-    reg [3:0] KEY;
-    reg CLOCK_50;
-    reg[31:0] instWord;
-    wire [9:0] LEDR;
-    wire [7:0] LEDG;
-    wire [6:0] HEX0,HEX1,HEX2,HEX3;
-   
-   
+    
     //PLL, clock generation, and reset generation
     //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
     wire clk, lock;
@@ -83,8 +90,8 @@ module TestTopLevel3();
     wire reset = ~lock;
 
     // Controller Output
-    wire useImmPc;
-    wire[DBITS - 1:0] pcIn, pcOld;
+    wire useImmPc, isJal;
+    wire[DBITS - 1:0] pcIn;
     wire wrtEnReg;
     wire[31:0] wrtReg;
     wire useZeroExe, useImmExe, isMvhi, isBranchOrCond;
@@ -92,7 +99,7 @@ module TestTopLevel3();
     wire wrEnMem;
 
     // InstrFetch output
-    wire[DBITS - 1: 0] pcOut;
+    wire[DBITS - 1: 0] pcAdded, pcOut;
 
     // InstMemory output
 //    wire[IMEM_DATA_BIT_WIDTH - 1: 0] instWord;
@@ -114,21 +121,22 @@ module TestTopLevel3();
     
     // Controller
     SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
-        lock, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
-        useImmPc, pcIn, pcOld, // PC
+        lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
+        useImmPc, pcIn, isJal, // PC
         wrtEnReg, wrtReg, // RegFetch
         useZeroExe, useImmExe, isMvhi, isBranchOrCond, opAlu, opCond, // Execute
         wrEnMem // Memory
     );
   
     // PC module
-    InstrFetch pc (clk, reset, useImmPc, pcIn, pcOld, pcOut);
+    InstrFetch pc (clk, reset, useImmPc, pcIn, isJal, pcAdded, pcOut);
   
-    wire[31:0] instWordReal;
+/*    wire[31:0] instWordReal;
     // Instruction Memory
     InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (
         pcOut[IMEM_PC_BITS_HI - 1: IMEM_PC_BITS_LO], instWordReal
     );
+*/
 
     // Instruction Decoder
     Decoder #(INST_BIT_WIDTH, REG_INDEX_BIT_WIDTH) instrDecoder (
@@ -137,7 +145,7 @@ module TestTopLevel3();
   
     // Register File and Sign Extension
     RegFetch #(REG_INDEX_BIT_WIDTH, DBITS) regFetch (
-        clk, wrtEnReg, rd, rs1, rs2, wrtReg, imm16,
+        clk, wrtEnReg, isJal, rd, rs1, rs2, wrtReg, imm16,
         outRegd, outReg1, outReg2, imm32
     );
 
@@ -155,14 +163,7 @@ module TestTopLevel3();
         LEDR, LEDG, HEX0, HEX1, HEX2, HEX3, outMem
     );
 
-    reg num1;
-    reg[3:0] num4;
-    reg[15:0] num16;
-    reg[31:0] num32;
-    
-
-/*
-0000008b : 50c60008;
+    /*
 -- @ 0x00000230 :	 ADDI	 T0,FP,0X37
 0000008c : 804d0037;
 -- @ 0x00000234 :	 ADDI	 T1,FP,0XE1
@@ -186,45 +187,44 @@ module TestTopLevel3();
 */
     
     initial begin
-instWord = 32'h804d0037;
+        $display("//-- @ 0x00000230 :	 ADDI	 T0,FP,0X37");
+        instWord = 32'h804d0037;
         CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
         num32 = wrtReg; $display("wrtReg: %h", num32);
-instWord = 32'h805d00e1;
+
+        $display("//-- @ 0x00000234 :	 ADDI	 T1,FP,0XE1");
+        instWord = 32'h805d00e1;
         CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
         num32 = wrtReg; $display("wrtReg: %h", num32);
-        num32 = outAlu; $display("addr: %h", num32);
-instWord = 32'h802d0400;
-        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
-        num32 = wrtReg; $display("wrtReg: %h", num32);
-        num32 = outAlu; $display("addr: %h", num32);
-instWord = 32'h50240000;
-        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
-        num32 = outReg2; $display("outReg2: %h", num32);
-        num32 = outAlu; $display("addr: %h", num32);
-instWord = 32'h50250004;
-        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("**pcOut %h", num32);
-        num32 = outReg2; $display("outReg2: %h", num32);
-        num32 = outAlu; $display("addr: %h", num32);
-        num32 = wrtEnReg; $display("wrtEnReg: %h", num32);
-        num32 = outReg1; $display("outReg1: %h", num32);
         
-instWord = 32'h80220004;
+        $display("//-- @ 0x00000238 :	 ADDI	 A2,FP,1024");
+        instWord = 32'h802d0400;
         CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
-        num32 = wrtReg; $display("***wrtReg: %h", num32);
+        num32 = wrtReg; $display("wrtReg: %h", num32);
+
+        $display("//-- @ 0x0000023c :	 SW	 T0,0(A2)");
+        instWord = 32'h50240000;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = outReg2; num320 = outAlu; 
+        $display("outReg2: %h @ addr: %h", num32, num320);
+
+        $display("//-- @ 0x00000240 :	 SW	 T1,4(A2)");
+        instWord = 32'h50250004;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = outReg2; num320 = outAlu; 
+        $display("outReg2: %h @ addr: %h", num32, num320);
+        
+        $display("//-- @ 0x00000244 :	 ADDI	 A2,A2,4");
+        instWord = 32'h80220004;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = wrtReg; $display("wrtReg: %h", num32);
         num32 = outAlu; $display("outAlu: %h", num32);
         num32 = imm32; $display("imm: %h", num32);
         num32 = outReg1; $display("reg1: %h", num32);
         
-instWord = 32'h90020000;
+        $display("//-- @ 0x00000248 :	 LW	 A0,0(A2)");
+        instWord = 32'h90020000;
         CLOCK_50 = 1'b1; #1 
-            $display("-------------");
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
         num32 = wrtReg; $display("wrtReg: %h", num32);
         num32 = outAlu; $display("addr: %h", num32);
         num32 = imm32; $display("imm: %h", num32);
@@ -232,20 +232,20 @@ instWord = 32'h90020000;
         num32 = outRegd; $display("regd: %h", num32);
         num32 = outMem; $display("outMem: %h", num32);
         CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
+        $display("-------------");
         num32 = wrtReg; $display("wrtReg: %h", num32);
         num32 = outAlu; $display("addr: %h", num32);
         num32 = imm32; $display("imm: %h", num32);
         num32 = outReg1; $display("reg1: %h", num32);
         num32 = outRegd; $display("regd: %h", num32);
         num32 = outMem; $display("outMem: %h", num32);
-instWord = 32'h69050002;
-        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
-        num32 = pcOut >> 2; $display("pcOut %h", num32);
-        num32 = outReg1; $display("reg1: %h", num32);
-        num32 = outReg2; $display("reg2: %h", num32);
 
-    num32 = useImmPc; $display("useImmPc: %h", num32);
+        $display("//-- @ 0x0000024c :	 BNE	 A0,T1,MEMFAILED");
+        instWord = 32'h69050002;
+        CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
+        num32 = outReg1; num320 = outReg2;
+        $display("reg1: %h, reg2 : %h", num32, num320);
+        num32 = useImmPc; $display("branch?: %h", num32);
   /*     
 instWord = 32'h9002fffc;
         CLOCK_50 = 1'b1; #1 CLOCK_50 = 1'b0; #1
@@ -260,5 +260,6 @@ instWord = 32'h61040004;
 */
 
     end
+
     
 endmodule

@@ -36,7 +36,8 @@ module SCProcController(
     assign wrtReg =
         op1[0] ? (op1[1] ? pcAdded : outMem) : // JAL, LW
         outAlu;
-        
+    
+    
     // Execute
     output isMvhi;
     assign isMvhi = op1[3] & ~op1[1] & op2[0] & op2[1];

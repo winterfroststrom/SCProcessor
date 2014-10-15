@@ -1,4 +1,7 @@
-module DataMemoryController(wrMEM, addr, isHex, isLedr, isLedg, isSwitches, isWrRegMem, isIoOut);
+module DataMemoryController(
+    wrMEM, addr,
+    isHex, isLedr, isLedg, isSwitches, isWrRegMem, isIoOut
+);
 
     parameter DATA_BIT_WIDTH;
 

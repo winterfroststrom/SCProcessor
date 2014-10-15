@@ -18,7 +18,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     parameter ADDR_LEDR                    = 32'hF0000004;
     parameter ADDR_LEDG                    = 32'hF0000008;
 
-    parameter IMEM_INIT_FILE               = "src/asm/Test2_asm.mif";
+    parameter IMEM_INIT_FILE               = "src/asm/Sorter2_asm.mif";
     parameter IMEM_ADDR_BIT_WIDTH          = 11;
     parameter IMEM_DATA_BIT_WIDTH          = INST_BIT_WIDTH;
     parameter IMEM_PC_BITS_HI              = IMEM_ADDR_BIT_WIDTH + 2;
@@ -76,7 +76,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     //Pll pll(.inclk0(CLOCK_50), .c0(clk), .locked(lock));
     wire clk, lock;
 //    assign clk = ~KEY[0];
-//    assign lock = 1'b1;
+    //assign lock = 1'b1;
     PLL   PLL_inst (.inclk0 (CLOCK_50),.c0 (clk),.locked (lock));
     wire reset = ~lock;
 
@@ -111,6 +111,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     wire[31:0] outMem;
     
     // Controller
+    wire pcWrtEn = 1'b1;
     SCProcController #(OP_BIT_WIDTH, DBITS, OP2_SUB) controller (
         lock, pcAdded, pcOut, op1, op2, imm32, outAlu, outCond, outMem,
         useImmPc, pcIn, isJal, // PC
@@ -120,7 +121,7 @@ module Project2(SW,KEY,LEDR,LEDG,HEX0,HEX1,HEX2,HEX3,CLOCK_50);
     );
   
     // PC module
-    InstrFetch pc (clk, reset, useImmPc, pcIn, isJal, pcAdded, pcOut);
+    InstrFetch pc (clk, reset, pcWrtEn, useImmPc, pcIn, isJal, pcAdded, pcOut);
   
     // Instruction Memory
     InstMemory #(IMEM_INIT_FILE, IMEM_ADDR_BIT_WIDTH, IMEM_DATA_BIT_WIDTH) instMem (

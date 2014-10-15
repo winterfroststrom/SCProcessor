@@ -1,4 +1,6 @@
-module RegisterFile(clk, wrtEn, rd, rs1, rs2, wrtData, outd, out1, out2);
+module RegisterFile(
+    clk, wrtEn, rd, rs1, rs2, wrtData, outd, out1, out2
+);
 
     parameter DBITS;
     
@@ -23,7 +25,7 @@ module RegisterFile(clk, wrtEn, rd, rs1, rs2, wrtData, outd, out1, out2);
     assign out1 = registers[rs1];
     assign out2 = registers[rs2];
 
-    always @(negedge clk) begin
+    always @(posedge clk) begin
         if(wrtEn) begin
             registers[rd] <= wrtData;
         end

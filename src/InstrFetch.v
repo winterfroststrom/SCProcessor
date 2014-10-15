@@ -1,16 +1,15 @@
-module InstrFetch(clk, reset, useImm, imm, isJal, pcAdded, pcOut);
+module InstrFetch(clk, reset, pcWrtEn, useImm, imm, isJal, pcAdded, pcOut);
     
     parameter DBITS     = 32;
     parameter START_PC  = 32'h40;
 
     input clk;
-    input reset;
+    input reset, pcWrtEn;
     input[DBITS - 1:0] imm;
     input useImm, isJal;
 
     output[DBITS - 1:0] pcAdded, pcOut;
 
-    wire pcWrtEn = 1'b1;
     wire[DBITS - 1: 0] pcIn;
     
     PCLogic pcLogic (pcOut, imm, useImm, isJal, pcAdded, pcIn);
